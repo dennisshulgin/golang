@@ -5,21 +5,21 @@ import (
 )
 
 type user struct {
-	id int
-	name string
-	age int
+	id    int
+	name  string
+	age   int
 	email string
 }
 
 type product struct {
-	id int
-	name string
+	id    int
+	name  string
 	price int
 }
 
 type order struct {
-	id int
-	price int
+	id       int
+	price    int
 	products []product
 }
 
@@ -38,9 +38,8 @@ func (u *user) Validate() bool {
 	return true
 }
 
-
 func main() {
-	u := user {id: 1, name: "Denis", age: 28, email: "den@yandex.ru"}
+	u := user{id: 1, name: "Denis", age: 28, email: "den@yandex.ru"}
 	fmt.Println(u.Validate())
 	p1 := product{id: 1, name: "Product 1", price: 100}
 	p2 := product{id: 2, name: "Product 2", price: 200}
