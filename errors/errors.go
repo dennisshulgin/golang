@@ -1,58 +1,67 @@
 package main
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"os"
 	"slices"
+	"strconv"
 	"strings"
 )
+
+type Config struct {
+	Host  string
+	Port  int
+	Debug bool
+}
 
 var Properties = []string{"host", "debug", "port"}
 var booleanValues = []string{"false", "true"}
 
+var ErrInvalidPropertyLine = errors.New("Invalid property line")
 var ErrInvalidHost = errors.New("Invalid host")
 var ErrInvalidPort = errors.New("Invalid port")
 var ErrinvalidDebag = errors.New("Invalid debug")
 var ErrUnknownProperty = errors.New("Unknown property")
 
 func main() {
-	file, err := os.Open("config.txt")
-	hasErrors := false
+	input, errReadFile := os.ReadFile("config.txt")
 
-	if err != nil {
-		hasErrors = true
-		fmt.Println(err)
+	if errReadFile != nil {
+		fmt.Println(errReadFile)
 	}
+	config, errConfig := ParseConfig(string(input))
 
-	defer file.Close()
+	if errConfig != nil {
+		fmt.Println("Config is invalid")
+		fmt.Println(errConfig)
+	} else {
+		fmt.Println("Config is valid")
+		fmt.Println(config)
+	}
+}
 
-	scanner := bufio.NewScanner(file)
+func ParseConfig(input string) (Config, error) {
+	config := Config{}
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		splitted := strings.Split(line, "=")
-		propertyName := splitted[0]
-		propertyValue := splitted[1]
-		err := validateProperty(propertyName, propertyValue)
+	lines := strings.Split(input, "\n")
 
-		if err != nil {
-			hasErrors = true
-			fmt.Println(err.Error())
-			break
+	for _, line := range lines {
+		property := strings.Split(line, "=")
+		if len(property) != 2 {
+			return config, ErrInvalidPropertyLine
 		}
+
+		propertyError := validateProperty(property[0], property[1])
+
+		if propertyError != nil {
+			return config, propertyError
+		}
+
+		setProperty(&config, property[0], property[1])
 	}
 
-	if scanner.Err(); err != nil {
-		hasErrors = true
-		fmt.Print(err)
-	}
-
-	if !hasErrors {
-		fmt.Println("The file is valid!")
-	}
-
+	return config, nil
 }
 
 func validateProperty(propertyName string, propertyValue string) error {
@@ -60,29 +69,67 @@ func validateProperty(propertyName string, propertyValue string) error {
 		return ErrUnknownProperty
 	}
 
+	var propertyError error = nil
+
 	if propertyName == "host" {
-		trimmedHost := strings.TrimSpace(propertyValue)
-		if trimmedHost == "" {
-			return ErrInvalidHost
-		}
+		propertyError = validateHost(propertyValue)
 	}
 
 	if propertyName == "debug" {
-		if !slices.Contains(booleanValues, propertyValue) {
-			return ErrinvalidDebag
-		}
+		propertyError = validateDebug(propertyValue)
 	}
 
 	if propertyName == "port" {
-		if len(propertyValue) == 0 {
+		propertyError = validatePort(propertyValue)
+	}
+	return propertyError
+}
+
+func validatePort(portAsString string) error {
+	if len(portAsString) == 0 {
+		return ErrInvalidPort
+	}
+
+	for i := 0; i < len(portAsString); i++ {
+		if portAsString[i] < '0' || portAsString[i] > '9' {
 			return ErrInvalidPort
 		}
-
-		for i := 0; i < len(propertyValue); i++ {
-			if propertyValue[i] < '0' || propertyValue[i] > '9' {
-				return ErrInvalidPort
-			}
+		port, err := strconv.Atoi(portAsString)
+		if err != nil || port < 1 || port > 65535 {
+			return ErrInvalidPort
 		}
 	}
+
 	return nil
+}
+
+func validateDebug(debugAsString string) error {
+	if !slices.Contains(booleanValues, debugAsString) {
+		return ErrinvalidDebag
+	}
+
+	return nil
+}
+
+func validateHost(hostAsString string) error {
+	trimmedHost := strings.TrimSpace(hostAsString)
+	if trimmedHost == "" {
+		return ErrInvalidHost
+	}
+
+	return nil
+}
+
+func setProperty(config *Config, propertyName string, propertyValue string) {
+	if propertyName == "host" {
+		config.Host = propertyValue
+	}
+	if propertyName == "port" {
+		port, _ := strconv.Atoi(propertyValue)
+		config.Port = port
+	}
+	if propertyName == "debug" {
+		debug, _ := strconv.ParseBool(propertyValue)
+		config.Debug = debug
+	}
 }
