@@ -21,7 +21,7 @@ var booleanValues = []string{"false", "true"}
 var ErrInvalidPropertyLine = errors.New("Invalid property line")
 var ErrInvalidHost = errors.New("Invalid host")
 var ErrInvalidPort = errors.New("Invalid port")
-var ErrinvalidDebag = errors.New("Invalid debug")
+var ErrinvalidDebug = errors.New("Invalid debug")
 var ErrUnknownProperty = errors.New("Unknown property")
 
 func main() {
@@ -29,6 +29,7 @@ func main() {
 
 	if errReadFile != nil {
 		fmt.Println(errReadFile)
+		return
 	}
 	config, errConfig := ParseConfig(string(input))
 
@@ -94,10 +95,11 @@ func validatePort(portAsString string) error {
 		if portAsString[i] < '0' || portAsString[i] > '9' {
 			return ErrInvalidPort
 		}
-		port, err := strconv.Atoi(portAsString)
-		if err != nil || port < 1 || port > 65535 {
-			return ErrInvalidPort
-		}
+	}
+
+	port, err := strconv.Atoi(portAsString)
+	if err != nil || port < 1 || port > 65535 {
+		return ErrInvalidPort
 	}
 
 	return nil
@@ -105,7 +107,7 @@ func validatePort(portAsString string) error {
 
 func validateDebug(debugAsString string) error {
 	if !slices.Contains(booleanValues, debugAsString) {
-		return ErrinvalidDebag
+		return ErrinvalidDebug
 	}
 
 	return nil
