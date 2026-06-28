@@ -5,14 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
-
-var delimiters = map[byte]bool{
-	' ': true,
-	'?': true,
-	'.': true,
-	'!': true,
-}
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
@@ -35,23 +29,18 @@ func main() {
 }
 
 func getWords(input string) []string {
+	runes := []rune(input)
 	var words []string
 	var word strings.Builder
-	length := len(input)
 
-	for i := 0; i < length; i++ {
-		if delimiters[input[i]] {
+	for _, r := range runes {
+		if !unicode.IsDigit(r) && !unicode.IsLetter(r) {
 			if word.Len() > 0 {
 				words = append(words, word.String())
 			}
 			word.Reset()
 		} else {
-
-			if input[i] >= 65 && input[i] <= 90 {
-				word.WriteByte(input[i] + 32)
-			} else {
-				word.WriteByte(input[i])
-			}
+			word.WriteRune(unicode.ToLower(r))
 		}
 	}
 
