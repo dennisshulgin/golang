@@ -5,15 +5,26 @@ import (
 )
 
 func TestValidate(t *testing.T) {
-	u1 := user{id: 1, name: "Denis", age: -1, email: "dens@yandex.ru"}
-	u2 := user{id: 2, name: "Denis", age: 28, email: "dens@yandex.ru"}
-	if u1.Validate() {
-		t.Error("Expected false")
+	tests := []struct {
+		name     string
+		input    user
+		expected bool
+	}{
+		{name: "invalid_id", input: user{id: 0, age: 28, email: "den@yandex.ru", name: "Den"}, expected: false},
+		{name: "invalid_age", input: user{id: 1, age: -1, email: "den@yandex.ru", name: "Den"}, expected: false},
+		{name: "invalid_name", input: user{id: 1, age: 28, email: "den@yandex.ru", name: ""}, expected: false},
+		{name: "valid_user", input: user{id: 1, age: 28, email: "den@yandex.ru", name: "Den"}, expected: true},
 	}
 
-	if !u2.Validate() {
-		t.Error("Expected true")
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			actual := test.input.Validate()
+			if actual != test.expected {
+				t.Errorf("Expected %t, but got %t", test.expected, actual)
+			}
+		})
 	}
+
 }
 
 func TestTotal(t *testing.T) {
