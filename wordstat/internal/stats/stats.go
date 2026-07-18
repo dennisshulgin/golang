@@ -1,9 +1,42 @@
 package stats
 
 import (
+	"io"
 	"strings"
 	"unicode"
 )
+
+func ReadAsString(input io.Reader) (string, error) {
+	buffer := make([]byte, 8)
+	var inputString strings.Builder
+	isEnd := false
+
+	for {
+		count, err := input.Read(buffer)
+
+		if err != nil {
+			return "", err
+		}
+
+		if count == 0 {
+			break
+		}
+
+		for _, ch := range buffer {
+			if ch == '\n' {
+				isEnd = true
+			}
+		}
+
+		inputString.WriteString(string(buffer[:count]))
+
+		if isEnd {
+			break
+		}
+	}
+
+	return inputString.String(), nil
+}
 
 func GetWords(input string) []string {
 	runes := []rune(input)
