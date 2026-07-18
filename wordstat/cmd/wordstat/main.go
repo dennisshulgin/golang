@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"example/wordstat/internal/stats"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -13,7 +14,7 @@ func main() {
 
 	input, err := stats.ReadAsString(reader)
 
-	if err != nil {
+	if err != io.EOF {
 		return
 	}
 

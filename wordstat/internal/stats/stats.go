@@ -9,33 +9,27 @@ import (
 func ReadAsString(input io.Reader) (string, error) {
 	buffer := make([]byte, 8)
 	var inputString strings.Builder
-	isEnd := false
 
 	for {
 		count, err := input.Read(buffer)
 
-		if err != nil {
-			return "", err
-		}
-
-		if count == 0 {
-			break
-		}
-
-		for _, ch := range buffer {
-			if ch == '\n' {
-				isEnd = true
+		if count > 0 {
+			for i, ch := range buffer[:count] {
+				if ch == '\n' {
+					inputString.Write(buffer[:i])
+					return inputString.String(), nil
+				}
 			}
 		}
 
-		inputString.WriteString(string(buffer[:count]))
+		if err != nil {
+			if err == io.EOF {
+				return inputString.String(), nil
+			}
 
-		if isEnd {
-			break
+			return inputString.String(), err
 		}
 	}
-
-	return inputString.String(), nil
 }
 
 func GetWords(input string) []string {
