@@ -20,7 +20,7 @@ func ReadAsString(input io.Reader) (string, error) {
 					return inputString.String(), nil
 				}
 			}
-			inputString.Write(buffer)
+			inputString.Write(buffer[:count])
 		}
 
 		if err != nil {
