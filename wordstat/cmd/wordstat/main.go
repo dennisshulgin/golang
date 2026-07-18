@@ -4,17 +4,30 @@ import (
 	"bufio"
 	"example/wordstat/internal/stats"
 	"fmt"
-	"io"
 	"os"
+	"io"
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Input: ")
+	var reader io.Reader
+
+	if len(os.Args) > 1 {
+		path := os.Args[1]
+		file, err := os.Open(path)
+
+		if err != nil {
+			return
+		}
+		defer file.Close()
+		reader = file
+	} else {
+		fmt.Print("Input: ")
+		reader = bufio.NewReader(os.Stdin)
+	}
 
 	input, err := stats.ReadAsString(reader)
 
-	if err != io.EOF {
+	if err != nil {
 		return
 	}
 
