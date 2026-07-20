@@ -19,7 +19,7 @@ func ReadNumbers() []int {
 	for _, part := range parts {
 		number, error := strconv.Atoi(part)
 		if error != nil {
-			fmt.Println("Ошибка преобразования: ", part, error)	
+			fmt.Println("Ошибка преобразования: ", part, error)
 		}
 		numbers = append(numbers, number)
 	}
@@ -58,15 +58,14 @@ func calculate() {
 	numbers := ReadNumbers()
 	if len(numbers) == 0 {
 		fmt.Println("Массив числел пустой. Завершение программы")
-		return	
-	}	
-	
+		return
+	}
+
 	fmt.Println("Среднее значение: ", FindAvgNumber(numbers))
 	fmt.Println("Максимальное значение: ", FindMaxNumber(numbers))
 	fmt.Println("Минимальное значение: ", FindMinNumber(numbers))
 }
 
-
 func main() {
-	calculate()	
+	calculate()
 }

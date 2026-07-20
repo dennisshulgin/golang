@@ -1,15 +1,15 @@
 package stats
 
 import (
+	"bufio"
+	"fmt"
 	"io"
+	"os"
 	"strings"
 	"unicode"
-	"os"
-	"fmt"
-	"bufio"
 )
 
-func GetInputReader(args[] string) (io.Reader, func(), error) {
+func GetInputReader(args []string) (io.Reader, func(), error) {
 	var reader io.Reader
 
 	var closeFunc = func() {}
@@ -24,9 +24,9 @@ func GetInputReader(args[] string) (io.Reader, func(), error) {
 		}
 
 		closeFunc = func() {
-			defer file.Close()
+			_ = file.Close()
 		}
-		
+
 		reader = file
 	} else {
 		fmt.Print("Input: ")

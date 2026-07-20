@@ -31,7 +31,12 @@ func TestReadAsString(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			result, _ := ReadAsString(test.input)
+			result, err := ReadAsString(test.input)
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
 			if result != test.expected {
 				t.Errorf("Got %s, but expected %s", result, test.expected)
 			}

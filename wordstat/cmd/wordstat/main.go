@@ -10,6 +10,11 @@ func main() {
 	reader, closeFunc, err := stats.GetInputReader(os.Args)
 	defer closeFunc()
 
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+
 	input, err := stats.ReadAsString(reader)
 
 	if err != nil {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -10,12 +10,12 @@ import (
 func ReadString() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
-	return scanner.Text()	
+	return scanner.Text()
 }
 
 func CountWords(s string) map[string]int {
 	words := strings.Split(s, " ")
-	wordToCount := make(map[string]int)	
+	wordToCount := make(map[string]int)
 
 	for _, word := range words {
 		wordToCount[word]++
@@ -23,7 +23,6 @@ func CountWords(s string) map[string]int {
 
 	return wordToCount
 }
-
 
 func main() {
 	text := ReadString()

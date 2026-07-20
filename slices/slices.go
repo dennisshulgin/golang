@@ -4,16 +4,16 @@ import "fmt"
 
 func Reverse(nums []int) []int {
 	if len(nums) == 0 {
-		return nums	
+		return nums
 	}
 
 	leftPoint := 0
 	rightPoint := len(nums) - 1
-	
+
 	for leftPoint < rightPoint {
 		temp := nums[leftPoint]
 		nums[leftPoint] = nums[rightPoint]
-		nums[rightPoint] = temp		
+		nums[rightPoint] = temp
 		leftPoint++
 		rightPoint--
 	}
@@ -37,15 +37,15 @@ func Chunk(nums []int, chunkSize int) [][]int {
 		fmt.Println("Размер чанка должен быть больше 0.")
 		return [][]int{}
 	}
-	
+
 	if len(nums) == 0 {
 		fmt.Println("Пустой набор чисел")
 		return [][]int{}
 	}
-	
+
 	var chunkCount int = len(nums) / chunkSize
-	
-	if len(nums) % chunkSize > 0 {
+
+	if len(nums)%chunkSize > 0 {
 		chunkCount++
 	}
 
@@ -63,28 +63,14 @@ func Chunk(nums []int, chunkSize int) [][]int {
 		//fmt.Println("Чанк:", index / chunkSize)
 		//fmt.Println("Индекс в чанке: ", index % chunkSize)
 		//fmt.Println()
-		chunks[index / chunkSize] = append(chunks[index / chunkSize], num)
+		chunks[index/chunkSize] = append(chunks[index/chunkSize], num)
 	}
-	
+
 	return chunks
 }
-
 
 func main() {
 	nums := []int{1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 9}
 	fmt.Println(Deduplicate(Reverse(nums)))
 	fmt.Println(Chunk(nums, 3))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

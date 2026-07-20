@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"example/packages/mathutils"
+	"fmt"
 )
 
 func main() {
