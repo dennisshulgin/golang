@@ -1,12 +1,11 @@
 package stats
 
 import (
-	"example/wordstat/internal/stats"
-	"fmt"
-	"reflect"
-	"io"
-	"testing"
 	"bytes"
+	"fmt"
+	"io"
+	"reflect"
+	"testing"
 )
 
 func TestGetWords(t *testing.T) {
@@ -21,17 +20,18 @@ func TestGetWords(t *testing.T) {
 
 func TestReadAsString(t *testing.T) {
 	tests := []struct {
-		name string
-		input io.Reader
+		name     string
+		input    io.Reader
 		expected string
-	} {
+	}{
 		{name: "string_with_n", input: bytes.NewBufferString("Denis denis \n qwerty"), expected: "Denis denis "},
+		{name: "string_without_n", input: bytes.NewBufferString("Denis denis qwerty"), expected: "Denis denis qwerty"},
+		{name: "empty_string", input: bytes.NewBufferString(""), expected: ""},
 	}
-
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			result := stats.ReadAsString(test.input)
+			result, _ := ReadAsString(test.input)
 			if result != test.expected {
 				t.Errorf("Got %s, but expected %s", result, test.expected)
 			}
