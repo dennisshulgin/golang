@@ -4,7 +4,37 @@ import (
 	"io"
 	"strings"
 	"unicode"
+	"os"
+	"fmt"
+	"bufio"
 )
+
+func GetInputReader(args[] string) (io.Reader, func(), error) {
+	var reader io.Reader
+
+	var closeFunc = func() {}
+
+	if len(args) > 1 {
+		path := args[1]
+		file, err := os.Open(path)
+
+		if err != nil {
+			fmt.Println("Error: ", err)
+			return nil, closeFunc, err
+		}
+
+		closeFunc = func() {
+			defer file.Close()
+		}
+		
+		reader = file
+	} else {
+		fmt.Print("Input: ")
+		reader = bufio.NewReader(os.Stdin)
+	}
+
+	return reader, closeFunc, nil
+}
 
 func ReadAsString(input io.Reader) (string, error) {
 	buffer := make([]byte, 8)

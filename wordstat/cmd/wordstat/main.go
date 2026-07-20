@@ -1,33 +1,19 @@
 package main
 
 import (
-	"bufio"
 	"example/wordstat/internal/stats"
 	"fmt"
 	"os"
-	"io"
 )
 
 func main() {
-	var reader io.Reader
-
-	if len(os.Args) > 1 {
-		path := os.Args[1]
-		file, err := os.Open(path)
-
-		if err != nil {
-			return
-		}
-		defer file.Close()
-		reader = file
-	} else {
-		fmt.Print("Input: ")
-		reader = bufio.NewReader(os.Stdin)
-	}
+	reader, closeFunc, err := stats.GetInputReader(os.Args)
+	defer closeFunc()
 
 	input, err := stats.ReadAsString(reader)
 
 	if err != nil {
+		fmt.Println("Error: ", err)
 		return
 	}
 
