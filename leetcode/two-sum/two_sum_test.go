@@ -6,11 +6,11 @@ import (
 
 func TestTwoSum(t *testing.T) {
 	tests := []struct {
-		name string
-		nums []int
-		target int
+		name     string
+		nums     []int
+		target   int
 		expected []int
-	} {
+	}{
 		{name: "default", nums: []int{1, 2, 3, 4}, target: 5, expected: []int{1, 2}},
 		{name: "all_equals", nums: []int{1, 1, 1, 1}, target: 2, expected: []int{0, 1}},
 		{name: "not_found", nums: []int{1, 2, 3, 4}, target: 10, expected: []int{}},
@@ -38,5 +38,5 @@ func areEqualSlices(a []int, b []int) bool {
 		}
 	}
 
-	return true;
+	return true
 }
