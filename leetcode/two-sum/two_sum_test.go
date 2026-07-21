@@ -14,6 +14,9 @@ func TestTwoSum(t *testing.T) {
 		{name: "default", nums: []int{1, 2, 3, 4}, target: 5, expected: []int{1, 2}},
 		{name: "all_equals", nums: []int{1, 1, 1, 1}, target: 2, expected: []int{0, 1}},
 		{name: "not_found", nums: []int{1, 2, 3, 4}, target: 10, expected: []int{}},
+		{name: "negative", nums: []int{-3, 4, 3, 90}, target: 0, expected: []int{0, 2}},
+		{name: "empty", nums: []int{}, target: 0, expected: []int{}},
+		{name: "one_element", nums: []int{1}, target: 0, expected: []int{}},
 	}
 
 	for _, test := range tests {
