@@ -13,7 +13,7 @@ var BooleanValues = []string{"false", "true"}
 var ErrInvalidPropertyLine = errors.New("Invalid property line")
 var ErrInvalidHost = errors.New("Invalid host")
 var ErrInvalidPort = errors.New("Invalid port")
-var ErrinvalidDebug = errors.New("Invalid debug")
+var ErrInvalidDebug = errors.New("Invalid debug")
 var ErrUnknownProperty = errors.New("Unknown property")
 
 type Config struct {
@@ -87,7 +87,7 @@ func validatePort(portAsString string) error {
 
 func validateDebug(debugAsString string) error {
 	if !slices.Contains(BooleanValues, debugAsString) {
-		return ErrinvalidDebug
+		return ErrInvalidDebug
 	}
 
 	return nil
