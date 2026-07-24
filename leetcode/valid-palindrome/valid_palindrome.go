@@ -1,7 +1,6 @@
 package validpalindrome
 
 import (
-	"fmt"
 	"unicode"
 )
 
