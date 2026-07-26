@@ -8,7 +8,7 @@ func MaxProfit(prices []int) int {
 		if prices[i]-prices[l] >= 0 {
 			result = max(prices[i]-prices[l], result)
 		} else {
-			l++
+			l = i
 		}
 	}
 

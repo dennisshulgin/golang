@@ -13,6 +13,7 @@ func TestBestTimeStock(t *testing.T) {
 		{name: "one_element", input: []int{1}, expected: 0},
 		{name: "decreased_sequence", input: []int{7, 6, 5, 4}, expected: 0},
 		{name: "increased_sequence", input: []int{1, 2, 3, 4}, expected: 3},
+		{name: "new_min", input: []int{7, 1, 5, 0, 6}, expected: 6},
 	}
 
 	for _, test := range tests {
