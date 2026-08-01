@@ -1,24 +1,23 @@
 package escapeanalysis
 
-
 import (
 	"fmt"
 )
 
 type User struct {
 	Name string
-	Age int
+	Age  int
 }
 
 /*
-	a, b no escape
+a, b no escape
 */
 func Sum(a, b int) int {
 	return a + b
 }
 
 /*
-	x escape
+x escape
 */
 func NewInt() *int {
 	x := 42
@@ -26,28 +25,28 @@ func NewInt() *int {
 }
 
 /*
-	v no escape
+v no escape
 */
 func PrintValue(v any) {
 	fmt.Println(v)
 }
 
 /*
-	[]int escape
+[]int escape
 */
 func MakeSmallSlice() []int {
 	return make([]int, 10)
 }
 
 /*
-	u.Age no escape
+u.Age no escape
 */
 func (u User) IsAdult() bool {
-	return u.Age > 18
+	return u.Age >= 18
 }
 
 /*
-	u.Age no escape, but object u may be store in heap
+u.Age no escape, but object u may be store in heap
 */
 func (u *User) Birthday() {
 	u.Age++
