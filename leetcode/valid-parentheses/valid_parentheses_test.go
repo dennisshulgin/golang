@@ -10,7 +10,7 @@ func TestValid(t *testing.T) {
 		input    string
 		expected bool
 	}{
-		{name: "empty_stirng", input: "", expected: true},
+		{name: "empty_string", input: "", expected: true},
 		{name: "one_parenthese", input: "(", expected: false},
 		{name: "default", input: "({})", expected: true},
 		{name: "invalid_positions", input: "{(})", expected: false},

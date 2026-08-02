@@ -9,7 +9,7 @@ var openToClose map[rune]rune = map[rune]rune{
 func IsValid(s string) bool {
 	runes := []rune(s)
 
-	stack := make([]rune, 0, len(s))
+	stack := make([]rune, 0, len(runes))
 
 	for _, ch := range runes {
 		if !isParenthese(ch) {
