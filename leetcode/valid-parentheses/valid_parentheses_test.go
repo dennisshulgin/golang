@@ -6,10 +6,10 @@ import (
 
 func TestValid(t *testing.T) {
 	tests := []struct {
-		name string
-		input string
+		name     string
+		input    string
 		expected bool
-	} {
+	}{
 		{name: "empty_stirng", input: "", expected: true},
 		{name: "one_parenthese", input: "(", expected: false},
 		{name: "default", input: "({})", expected: true},
