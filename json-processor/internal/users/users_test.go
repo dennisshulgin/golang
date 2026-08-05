@@ -29,6 +29,19 @@ func TestParseInvalid(t *testing.T) {
 	}
 }
 
+func TestParseEmpty(t *testing.T) {
+	input := strings.NewReader("[]")
+	users, err := Parse(input)
+
+	if err != nil {
+		t.Errorf("Unexpected error %v", err)
+	}
+
+	if len(users) != 0 {
+		t.Errorf("Expected 0 users, but got %v", len(users))
+	}
+}
+
 func TestCountActive(t *testing.T) {
 	users := []User{
 		{ID: 1, Name: "Denis", Age: 28, Active: true},

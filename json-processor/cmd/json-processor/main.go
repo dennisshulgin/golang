@@ -28,13 +28,15 @@ func main() {
 		reader = bufio.NewReader(os.Stdin)
 	}
 
-	users, err := users.Parse(reader)
+	parsedUsers, err := users.Parse(reader)
 
 	if err != nil {
 		fmt.Printf("Parse input error: %v", err)
+		return
 	}
 
-	for _, user := range users {
-		fmt.Println(user)
-	}
+	fmt.Println("total users:", len(parsedUsers))
+	fmt.Println("active users:", users.CountActive(parsedUsers))
+	fmt.Println("adults:", users.CountAdults(parsedUsers))
+	fmt.Println("average age:", users.AverageAge(parsedUsers))
 }
