@@ -7,7 +7,6 @@ import (
 
 func PrintNumber(worker int, count int, wg *sync.WaitGroup) {
 	defer wg.Done()
-	wg.Add(1)
 	for i := 1; i <= count; i++ {
 		fmt.Printf("worker %d: %d \n", worker, i)
 	}
@@ -20,6 +19,7 @@ func PrintNumbers() {
 
 	for i := 1; i <= goroutinesCount; i++ {
 		id := i
+		wg.Add(1)
 		go PrintNumber(id, numbersCount, &wg)
 	}
 
