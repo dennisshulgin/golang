@@ -2,36 +2,34 @@ package goroutines
 
 import (
 	"fmt"
-	"time"
 	"sync"
 )
 
-func PrintNumber(worker int, count int) {
+func PrintNumber(worker int, count int, wg *sync.WaitGroup) {
+	wg.Add(1)
 	for i := 1; i <= count; i++ {
 		fmt.Printf("worker %d: %d \n", worker, i)
 	}
+	wg.Done()
 }
 
 func PrintNumbers() {
 	goroutinesCount := 3
 	numbersCount := 3
+	var wg sync.WaitGroup
 
 	for i := 1; i <= goroutinesCount; i++ {
-		go PrintNumber(i, numbersCount)
+		id := i
+		go PrintNumber(id, numbersCount, &wg)
 	}
 
-	time.Sleep(time.Second)
-} 
+	wg.Wait()
+}
 
-func RunWorker(worker int, mu *sync.Mutex, wg *sync.WaitGroup, result *[]int) int {
-	defer wg.Done()
-	wg.Add(1)
-
+func RunWorker(worker int, mu *sync.Mutex, wg *sync.WaitGroup, result *[]int) {
 	mu.Lock()
 	*result = append(*result, worker)
 	mu.Unlock()
-
-	return worker
 }
 
 func RunWorkers(workerCount int) []int {
@@ -40,14 +38,12 @@ func RunWorkers(workerCount int) []int {
 	var result []int
 
 	for i := 1; i <= workerCount; i++ {
+		id := i
 		wg.Go(func() {
-			RunWorker(i, &mu, &wg, &result)
+			RunWorker(id, &mu, &wg, &result)
 		})
 	}
 
 	wg.Wait()
-
 	return result
 }
-
-
