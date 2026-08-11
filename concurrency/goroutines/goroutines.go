@@ -6,11 +6,11 @@ import (
 )
 
 func PrintNumber(worker int, count int, wg *sync.WaitGroup) {
+	defer wg.Done()
 	wg.Add(1)
 	for i := 1; i <= count; i++ {
 		fmt.Printf("worker %d: %d \n", worker, i)
 	}
-	wg.Done()
 }
 
 func PrintNumbers() {
