@@ -1,17 +1,17 @@
 package channels
 
 import (
-	"testing"
-	"sort"
 	"slices"
+	"sort"
+	"testing"
 )
 
 func TestGenerateSquares(t *testing.T) {
 	tests := []struct {
-		name string
-		input []int
+		name           string
+		input          []int
 		sortedExpected []int
-	} {
+	}{
 		{name: "empty", input: []int{}, sortedExpected: []int{}},
 		{name: "calculated", input: []int{1, 2, 3, 4, 5}, sortedExpected: []int{1, 4, 9, 16, 25}},
 	}
