@@ -32,7 +32,6 @@ func ProcessValues(
 				return ctx.Err()
 			case output <- num * num:
 			}
-			output <- num * num
 		case <-ctx.Done():
 			return ctx.Err()
 		}
