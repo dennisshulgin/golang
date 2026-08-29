@@ -27,6 +27,11 @@ func ProcessValues(
 			if !ok {
 				return nil
 			}
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case output <- num * num:
+			}
 			output <- num * num
 		case <-ctx.Done():
 			return ctx.Err()
