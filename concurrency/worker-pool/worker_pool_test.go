@@ -23,3 +23,12 @@ func TestProcessJobsEmpty(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", expected, actual)
 	}
 }
+
+func TestProcessJobsNegativeWorkers(t *testing.T) {
+	actual := ProcessJobs([]int{}, -10)
+	sort.Ints(actual)
+	expected := []int{}
+	if !slices.Equal(actual, expected) {
+		t.Errorf("Expected %v, but got %v", expected, actual)
+	}
+}

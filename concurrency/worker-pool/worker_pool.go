@@ -1,32 +1,18 @@
 package workerpool
 
 import (
-	"context"
 	"sync"
 )
 
 func ProcessJob(
-	ctx context.Context,
 	input <-chan int,
-	output chan int,
+	output chan<- int,
 	wg *sync.WaitGroup,
 ) {
 	defer wg.Done()
 
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case num, ok := <-input:
-			if !ok {
-				return
-			}
-			select {
-			case <-ctx.Done():
-				return
-			case output <- num * num:
-			}
-		}
+	for num := range input {
+		output <- num * num
 	}
 }
 
@@ -40,14 +26,12 @@ func ProcessJobs(
 
 	var wg sync.WaitGroup
 
-	ctx, cancel := context.WithCancel(context.Background())
-
 	input := make(chan int, workerCount)
 	output := make(chan int, workerCount)
 
 	for i := 0; i < workerCount; i++ {
 		wg.Add(1)
-		go ProcessJob(ctx, input, output, &wg)
+		go ProcessJob(input, output, &wg)
 	}
 
 	go func() {
@@ -60,7 +44,6 @@ func ProcessJobs(
 	go func() {
 		wg.Wait()
 		close(output)
-		cancel()
 	}()
 
 	result := []int{}
