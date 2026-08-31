@@ -1,9 +1,9 @@
 package workerpool
 
 import (
-	"testing"
-	"sort"
 	"slices"
+	"sort"
+	"testing"
 )
 
 func TestProcessJobs(t *testing.T) {
