@@ -33,9 +33,17 @@ func Square(
 	go func() {
 		defer close(channel)
 
-		for num := range input {
+		for {
 			select {
-			case channel <- num * num:
+			case num, ok := <-input:
+				if !ok {
+					return
+				}
+				select {
+				case channel <- num * num:
+				case <-ctx.Done():
+					return
+				}
 			case <-ctx.Done():
 				return
 			}
@@ -54,12 +62,20 @@ func FilterEven(
 	go func() {
 		defer close(channel)
 
-		for num := range input {
-			if num%2 != 0 {
-				continue
-			}
+		for {
 			select {
-			case channel <- num:
+			case num, ok := <-input:
+				if !ok {
+					return
+				}
+				if num%2 != 0 {
+					continue
+				}
+				select {
+				case channel <- num:
+				case <-ctx.Done():
+					return
+				}
 			case <-ctx.Done():
 				return
 			}
