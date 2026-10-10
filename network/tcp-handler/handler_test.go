@@ -1,8 +1,6 @@
 package tcphandler
 
 import (
-	"errors"
-	"io"
 	"net"
 	"sync"
 	"testing"
@@ -52,7 +50,7 @@ func TestTcpHandlerBye(t *testing.T) {
 	message = "HELLO\n"
 	count, err := clientConn.Write([]byte(message))
 
-	if count != 0 || errors.Is(err, io.EOF) {
+	if count != 0 || err == nil {
 		t.Error("Connection is not closed")
 	}
 }
@@ -89,7 +87,7 @@ func TestTcpHandlerCloseConnection(t *testing.T) {
 	wg.Go(func() {
 		err := HandleConnection(serverConn)
 
-		if !errors.Is(err, nil) {
+		if err != nil {
 			t.Error("Connection is not closed")
 		}
 	})
